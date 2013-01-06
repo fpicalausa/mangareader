@@ -1,0 +1,44 @@
+<tests>
+  <title>Segmentation Tests</title>
+  <description>Tests the extraction of cells from (artificial) manga pages.</description>
+  <data>
+    <colors>
+      <color>#FF0000</color>
+      <color>#00FF00</color>
+      <color>#0000FF</color>
+      <color>#FF00FF</color>
+    </colors>
+  </data>
+  <testcases>
+    <testcase>
+      <name>No Cell</name>
+      <description>Sanity test: on a blank image, no cell should be extracted.</description>
+      <input>nocell.png</input>
+    </testcase>
+    <testcase>
+      <name>Single Cell</name>,
+      <description>Extracting the single, well delimited cell contained on a page.</description>
+      <input>onecell.png</input>
+    </testcase>
+    <testcase>
+      <name>Containment</name>,
+      <description>In this test, a rectangle is contained in a cell. Only the outer cell should be detected.</description>
+      <input>containment.png</input>
+    </testcase>
+    <testcase>
+      <name>Complex Single Cell</name>
+      <description>In this test, the cell is filled with complex patterns. Only one cell should be detected.</description>
+      <input>onecomplexcell.png</input>
+    </testcase>
+    <testcase>
+      <name>Irregular cell</name>
+      <description>In this test, the cell is triangular, with an opening. The right polygon should be detected.</description>>
+      <input>irregular.png</input>>
+    </testcase>
+    <testcase>
+      <name>Cells Pattern</name>
+      <description>In this test, there are many different cells with some complicated layout.</description>>
+      <input>cellspattern.png</input>>
+    </testcase>
+  </testcases>
+</tests>

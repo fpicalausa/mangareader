@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaReader", "MangaReader\MangaReader.csproj", "{FBF68343-D3F8-42BE-95C9-2DE66A5DB876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaParser", "MangaParser\MangaParser.csproj", "{FA37C4EC-7210-4C49-895E-1F25C8D66C9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaParserTest", "MangaParserTest\MangaParserTest.csproj", "{2E499905-F991-484F-B027-F778051A8734}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualMangaParser", "VisualMangaParser\VisualMangaParser.csproj", "{18E4FEC4-EB81-433D-B4D8-0DEE014477AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBF68343-D3F8-42BE-95C9-2DE66A5DB876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBF68343-D3F8-42BE-95C9-2DE66A5DB876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBF68343-D3F8-42BE-95C9-2DE66A5DB876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBF68343-D3F8-42BE-95C9-2DE66A5DB876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA37C4EC-7210-4C49-895E-1F25C8D66C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA37C4EC-7210-4C49-895E-1F25C8D66C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA37C4EC-7210-4C49-895E-1F25C8D66C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA37C4EC-7210-4C49-895E-1F25C8D66C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E499905-F991-484F-B027-F778051A8734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E499905-F991-484F-B027-F778051A8734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E499905-F991-484F-B027-F778051A8734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E499905-F991-484F-B027-F778051A8734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E4FEC4-EB81-433D-B4D8-0DEE014477AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E4FEC4-EB81-433D-B4D8-0DEE014477AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E4FEC4-EB81-433D-B4D8-0DEE014477AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E4FEC4-EB81-433D-B4D8-0DEE014477AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal
