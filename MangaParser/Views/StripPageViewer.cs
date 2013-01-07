@@ -48,12 +48,13 @@ namespace MangaParser.Reader
         private IEnumerable<int> maxViews(List<Rectangle> mergedCells)
         {
             Rectangle current = mergedCells.First();
+            Size size = transformSize(maxWidth, maxHeight);
 
             for (int i = 1; i < mergedCells.Count; i++)
             {
                 Rectangle merge = Rectangle.Union(current, mergedCells[i]);
 
-                if (merge.Width < maxWidth)
+                if (merge.Width < size.Width)
                 {
                     current = merge;
                 }

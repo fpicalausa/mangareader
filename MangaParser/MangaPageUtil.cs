@@ -14,6 +14,7 @@ namespace MangaParser.Reader
     {
         public static IEnumerable<Rectangle> ComputeView(this Page page, IPageViewer viewer)
         {
+            viewer.ViewTransformation = Page.ReadingDirectionToMatrix(page.Direction);
             IEnumerable<Rectangle> view = viewer.ComputeView(page.TransformedCells);
             Matrix invert = Page.ReadingDirectionToInverseMatrix(page.Direction);
             return (from rectangle in view select rectangle.Transform(invert));

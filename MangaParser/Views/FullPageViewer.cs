@@ -18,5 +18,7 @@ namespace MangaReader
                 polygons.First().BoundingBox,
                 (Rectangle res, IPolygon p2) => Rectangle.Union(res, p2.BoundingBox)) };
         }
+
+        public System.Drawing.Drawing2D.Matrix ViewTransformation { get; set; }
     }
 }

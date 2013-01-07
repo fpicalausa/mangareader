@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,6 +19,7 @@ namespace MangaReader
         public event PropertyChangedEventHandler PropertyChanged;
 
         private IPageViewer _viewer = null;
+        private Matrix _viewTransformation;
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -31,7 +33,8 @@ namespace MangaReader
 
         private IPageViewer getViewer()
         {
-            if (_viewer == null) 
+            if (_viewer == null) { 
+
                 switch (_viewMode)
                 {
                     case MangaConfiguration.ViewModeKind.Strip:
@@ -47,6 +50,9 @@ namespace MangaReader
                         _viewer = null;
                         break;
                 }
+
+                if (_viewer != null) _viewer.ViewTransformation = _viewTransformation;
+            }
 
             return _viewer;
         }
@@ -88,6 +94,7 @@ namespace MangaReader
         public MangaPageViewer(MangaConfiguration configuration)
         {
             configuration.PropertyChanged+=configuration_PropertyChanged;
+            _viewTransformation = new Matrix();
         }
 
         private void configuration_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -102,5 +109,12 @@ namespace MangaReader
         {
             return getViewer().ComputeView(polygons);
         }
+
+        public System.Drawing.Drawing2D.Matrix ViewTransformation
+        { 
+            get { return _viewTransformation; } 
+            set { _viewTransformation = value; 
+                if (_viewer != null) 
+                    _viewer.ViewTransformation = value; } }
     }
 }

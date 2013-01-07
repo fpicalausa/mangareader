@@ -8,17 +8,22 @@ using MangaParser.Graphics;
 
 namespace MangaParser.Reader
 {
+    using System.Drawing.Drawing2D;
     using Merges = Tuple<Rectangle, List<Rectangle>>;
 
     public abstract class MergingPageViewer: IPageViewer
     {
-        private int MaxWidth;
-        private int MaxHeight;
+        private int maxWidth;
+        private int maxHeight;
+        private Size transformedSize;
+        public Matrix viewTransformation;
 
         public MergingPageViewer(int maxWidth, int maxHeight)
         {
-            this.MaxWidth = maxWidth;
-            this.MaxHeight = maxHeight;
+            this.maxWidth = maxWidth;
+            this.maxHeight = maxHeight;
+            this.transformedSize = new Size(maxWidth, maxHeight);
+            this.viewTransformation = new Matrix();
         }
         /// <summary>
         /// Indicates whether two rectangles must be merged together. This relation must be symmetric in r1,r2.
@@ -49,8 +54,8 @@ namespace MangaParser.Reader
                     mergedCells.AddRange(cells[j].Item2);
 
                     Rectangle mergedRectangles = Rectangle.Union(result, cells[j].Item1);
-                    if ((MaxWidth == -1 || mergedRectangles.Width <= MaxWidth) &&
-                        (MaxHeight == - 1 || mergedRectangles.Height <= MaxHeight)) {
+                    if ((maxWidth == -1 || mergedRectangles.Width <= transformedSize.Width) &&
+                        (maxHeight == - 1 || mergedRectangles.Height <= transformedSize.Height)) {
                         result = mergedRectangles;
                         merged[j] = true;
                     }
@@ -115,6 +120,23 @@ namespace MangaParser.Reader
             var merged = MergeCellsIterative((from p in polygons select p.BoundingBox).AsParallel().ToList());
 
             return from cell in merged select cell.Item1;
+        }
+
+        protected Size transformSize(int width, int height)
+        {
+            Point[] result = new Point[] { new Point(width, height) };
+            viewTransformation.TransformVectors(result);
+            result[0].X = Math.Abs(result[0].X);
+            result[0].Y = Math.Abs(result[0].Y);
+            return new Size(result[0]);
+        }
+
+        public Matrix ViewTransformation { 
+            get { return viewTransformation; }
+            set {
+                viewTransformation = value;
+                transformedSize = transformSize(maxWidth, maxHeight);
+            }
         }
     }
 }
