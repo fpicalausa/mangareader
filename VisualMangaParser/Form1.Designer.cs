@@ -256,7 +256,7 @@
             this.trackBar1.Size = new System.Drawing.Size(240, 45);
             this.trackBar1.TabIndex = 1;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar1.Value = 4;
+            this.trackBar1.Value = 128;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // Form1
