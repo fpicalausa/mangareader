@@ -95,6 +95,10 @@ namespace MangaReader
             {
                 targetIndex = 0;
             }
+            else if (targetIndex > targets.Count)
+            {
+                targetIndex = targets.Count - 1;
+            }
 
             Raise(Display);
         }
