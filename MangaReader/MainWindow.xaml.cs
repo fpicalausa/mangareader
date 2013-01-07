@@ -217,6 +217,8 @@ namespace MangaReader
             BitmapSource src = (BitmapSource)CurrentPage.Source;
             var scale = src.PixelWidth / src.Width;
 
+            currentPageTarget = target;
+
             if (scale != 1.0)
             {
                 //Scale the targets to correspond to image coordinates
