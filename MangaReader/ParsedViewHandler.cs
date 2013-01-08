@@ -52,10 +52,11 @@ namespace MangaReader
             }
             else
             {
-                if (CurrentPage.HasNext) CurrentPage.Next.ComputeReadingAsync();
                 targetIndex = targetIndex + 1;
                 Raise(Display);
             }
+
+            if (CurrentPage.HasNext) CurrentPage.Next.ComputeReadingAsync();
         }
 
         public void Previous()
@@ -72,10 +73,11 @@ namespace MangaReader
             }
             else
             {
-                if (CurrentPage.HasPrevious) CurrentPage.Previous.ComputeReadingAsync();
                 targetIndex = targetIndex - 1;
                 Raise(Display);
             }
+
+            if (CurrentPage.HasPrevious) CurrentPage.Previous.ComputeReadingAsync();
         }
 
         public void Refresh(Rectangle? oldView)

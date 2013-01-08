@@ -30,7 +30,7 @@ namespace MangaReader
         }
 
         private ViewModeKind _viewMode = ViewModeKind.FullPage;
-        private Page.ReadingDirection _readingDirection = Page.ReadingDirection.DownRight;
+        private Page.ReadingDirection _readingDirection = Page.ReadingDirection.DownLeft;
         private String _translation = null;
 
         public ViewModeKind ViewMode { 
