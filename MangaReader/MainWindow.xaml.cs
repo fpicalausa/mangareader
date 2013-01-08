@@ -408,6 +408,7 @@ namespace MangaReader
         {
             destination.Source = source.Source;
             destination.MoveToLTW(source.Rectangle());
+            destination.Visibility = source.Visibility;
         }
 
         private static void ShiftPages(params Image[] images)
