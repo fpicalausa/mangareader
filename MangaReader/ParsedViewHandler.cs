@@ -88,10 +88,21 @@ namespace MangaReader
             {
                 var oldCenter = oldView.Value.center();
 
-                targetIndex = (from t in targets.Select((x, i) => new { target = x, index = i })
-                               let c = t.target.center()
-                               orderby c.SqDist(oldCenter) ascending
-                               select t.index).First();
+                var contained = (from t in targets.Select((x, i) => new { target = x, index = i })
+                                 where oldView.Value.Contains(t.target)
+                                 select t.index);
+
+                if (contained.Any())
+                {
+                    targetIndex = contained.First();
+                }
+                else
+                {
+                    targetIndex = (from t in targets.Select((x, i) => new { target = x, index = i })
+                                   let c = t.target.center()
+                                   orderby c.SqDist(oldCenter) ascending
+                                   select t.index).First();
+                }
             }
             else if (targetIndex == -1)
             {
