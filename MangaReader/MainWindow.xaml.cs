@@ -27,6 +27,8 @@ namespace MangaReader
     {
         private const double animationTime = 0.3;
 
+        RecentMangas recent = null;
+
         private enum ViewKind
         {
             MangaView,
@@ -60,6 +62,9 @@ namespace MangaReader
         {
             InitializeComponent();
             showView(ViewKind.StartupView);
+
+            recent = RecentMangas.Load();
+            RecentItems.ItemsSource = recent.Recent;
 
             _resizeEnding.Tick += resizeEnding_Tick;
         }
@@ -218,6 +223,7 @@ namespace MangaReader
             var scale = src.PixelWidth / src.Width;
 
             currentPageTarget = target;
+            recent.AddRecent(currentMangaPage, currentPageTarget.Value);
 
             if (scale != 1.0)
             {
@@ -338,19 +344,17 @@ namespace MangaReader
             // The view is handled according to the user preference
             IViewHandler newHandler = createViewHandler();
             bindViewHandler(newHandler);
-
-            // Then we update the display according to the settings
-            updateView();
         }
 
-        private void LoadManga(string BaseFile)
+        private void LoadManga(string BaseFile, MangaConfiguration configuration = null)
         {
             book = new Manga(BaseFile);
             SetCurrentPage(book.GetPage(BaseFile));
 
-            applyOptions();
+            if (configuration != null)
+                book.Configuration.CopyFrom(configuration);
 
-            showView(ViewKind.OptionView);
+            applyOptions();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -369,6 +373,7 @@ namespace MangaReader
         {
             updateOptions();
             applyOptions();
+            updateView();
 
             showView(ViewKind.MangaView);
         }
@@ -498,11 +503,20 @@ namespace MangaReader
             if (result.HasValue && result.Value)
             {
                 LoadManga(dlg.FileName);
+                showView(ViewKind.OptionView);
             }
+        }
+
+        private void SaveState()
+        {
+            if (currentPageTarget.HasValue && currentPageTarget != null)
+                recent.AddRecent(currentMangaPage, currentPageTarget.Value);
+            recent.Save();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
+            SaveState();
             showView(ViewKind.StartupView);
         }
 
@@ -544,6 +558,20 @@ namespace MangaReader
         private void btnTranslate_Unchecked(object sender, RoutedEventArgs e)
         {
             CurrentPage.Source = currentMangaPage.Source;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void OpenRecent_Click(object sender, RoutedEventArgs e)
+        {
+            MangaState state = ((Button)sender).DataContext as MangaState;
+            LoadManga(state.CurrentPage, state.Configuration);
+            currentPageTarget = state.PageLocation;
+            updateView();
+            showView(ViewKind.MangaView);
         }
     }
 }

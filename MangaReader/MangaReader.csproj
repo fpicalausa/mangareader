@@ -61,8 +61,10 @@
     <Compile Include="FreeviewHandler.cs" />
     <Compile Include="FullPageViewHandler.cs" />
     <Compile Include="MangaPage.cs" />
+    <Compile Include="MangaState.cs" />
     <Compile Include="NullViewHandler.cs" />
     <Compile Include="ParsedViewHandler.cs" />
+    <Compile Include="RecentMangas.cs" />
     <Compile Include="ViewHandler.cs" />
     <Compile Include="WPFUtil.cs" />
     <Page Include="MainWindow.xaml">
