@@ -9,6 +9,7 @@ using MangaParser.Reader;
 
 namespace MangaReader
 {
+    [Serializable]
     public class MangaConfiguration: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,5 +45,12 @@ namespace MangaReader
         public string Translation {
             get { return _translation; }
             set { _translation = value; NotifyPropertyChanged(); } }
+
+        internal void CopyFrom(MangaConfiguration configuration)
+        {
+            ViewMode = configuration.ViewMode;
+            Translation = configuration.Translation;
+            ReadingDirection = configuration.ReadingDirection;
+        }
     }
 }
