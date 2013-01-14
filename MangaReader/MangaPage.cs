@@ -12,17 +12,30 @@ namespace MangaReader
 {
     public class MangaPage
     {
-        private string path;
-        private int index;
         private List<Rectangle> reading;
         private Task<List<Rectangle>> readingComputation;
         private WeakReference<MangaPage> next;
         private WeakReference<MangaPage> previous;
         private WeakReference<BitmapSource> pageSource;
         private WeakReference<BitmapSource> translationSource;
-        private Manga manga;
         private MangaPageViewer viewer;
         private WeakReference<Bitmap> bitmap;
+
+        /// <summary>
+        /// The Path of the image of this page of the Manga
+        /// </summary>
+        public string Path { get; private set; }
+
+        /// <summary>
+        /// The Index of this page in the Manga
+        /// </summary>
+        public int Index { get; private set; }
+
+        /// <summary>
+        /// The Manga that contains this page
+        /// </summary>
+        public Manga Manga { get; private set; }
+
 
         /// <summary>
         /// Precomputes the reading on this page.
@@ -34,7 +47,7 @@ namespace MangaReader
             if (readingComputation == null)
             {
                 readingComputation = Task.Run(() =>
-                    (new Page(this.Bitmap, manga.Configuration.ReadingDirection).ComputeView(viewer)).ToList()
+                    (new Page(this.Bitmap, Manga.Configuration.ReadingDirection).ComputeView(viewer)).ToList()
                 );
             }
 
@@ -42,25 +55,27 @@ namespace MangaReader
         }
 
         /// <summary>
-        /// Construct a page of the given manga using the given view.
+        /// Construct a page of the given Manga using the given view.
         /// </summary>
-        /// <param name="manga">The manga containing the page.</param>
+        /// <param name="Manga">The manga containing the page.</param>
         /// <param name="viewer">A viewer describing how the page should be read.</param>
-        /// <param name="path">The path of the underlying image file.</param>
-        /// <param name="index">The page number of this page in the manga.</param>
-        public MangaPage(Manga manga, MangaPageViewer viewer, string path, int index)
+        /// <param name="Path">The path of the underlying image file.</param>
+        /// <param name="Index">The page number of this page in the Manga.</param>
+        public MangaPage(Manga Manga, MangaPageViewer viewer, string Path, int Index)
         {
-            this.manga = manga;
             this.next = new WeakReference<MangaPage>(null);
             this.previous = new WeakReference<MangaPage>(null);
             this.bitmap = new WeakReference<Bitmap>(null);
             this.pageSource = new WeakReference<BitmapSource>(null);
             this.translationSource = new WeakReference<BitmapSource>(null);
-            this.viewer = viewer;
-            this.path = path;
-            this.index = index;
 
-            manga.Configuration.PropertyChanged += viewer_PropertyChanged;
+            this.viewer = viewer;
+
+            this.Manga = Manga;
+            this.Path = Path;
+            this.Index = Index;
+
+            Manga.Configuration.PropertyChanged += viewer_PropertyChanged;
             viewer.PropertyChanged += viewer_PropertyChanged;
         }
 
@@ -115,29 +130,29 @@ namespace MangaReader
         }
 
         /// <summary>
-        /// A bitmap constructed from the image path.
+        /// A bitmap constructed from the image Path.
         /// </summary>
         public Bitmap Bitmap
         {
             get
             {
-                return readCached(this.bitmap, () => new Bitmap(path));
+                return readCached(this.bitmap, () => new Bitmap(Path));
             }
         }
 
         /// <summary>
-        /// A bitmap source constructed from the image path of the manga page.
+        /// A bitmap source constructed from the image Path of the Manga page.
         /// </summary>
         public BitmapSource Source
         {
             get { 
-                return readCached(this.pageSource, () => new BitmapImage(new Uri(path)));
+                return readCached(this.pageSource, () => new BitmapImage(new Uri(Path)));
             }
         }
 
         /// <summary>
-        /// A bitmap source constructed from the image path corresponding to the translation
-        /// of the manga page.
+        /// A bitmap source constructed from the image Path corresponding to the translation
+        /// of the Manga page.
         /// </summary>
         public BitmapSource TranslationSource
         {
@@ -147,30 +162,30 @@ namespace MangaReader
         }
 
         /// <summary>
-        /// Whether this manga page has a translation.
+        /// Whether this Manga page has a translation.
         /// </summary>
         public bool HasTranslation
         {
             get
             {
-                return manga.HasTranslation && File.Exists(TranslationPath);
+                return Manga.HasTranslation && File.Exists(TranslationPath);
             }
 
         }
 
         /// <summary>
-        /// The path of the manga translation.
+        /// The Path of the Manga translation.
         /// </summary>
         public string TranslationPath
         {
             get
             {
-                return Path.Combine(manga.Configuration.Translation, Path.GetFileName(path));
+                return System.IO.Path.Combine(Manga.Configuration.Translation, System.IO.Path.GetFileName(Path));
             }
         }
         
         /// <summary>
-        /// The manga page that follows this one.
+        /// The Manga page that follows this one.
         /// </summary>
         public MangaPage Next {
             get {
@@ -180,7 +195,7 @@ namespace MangaReader
 
                 if (!next.TryGetTarget(out page))
                 {
-                    page = manga.GetPage(index + 1);
+                    page = Manga.GetPage(Index + 1);
                     next.SetTarget(page);
                     page.linkUpPrevious(this);
                 }
@@ -190,18 +205,18 @@ namespace MangaReader
         }
 
         /// <summary>
-        /// Whether a manga page follows this one.
+        /// Whether a Manga page follows this one.
         /// </summary>
         public bool HasNext
         {
             get
             {
-                return manga.PageCount > (index + 1);
+                return Manga.PageCount > (Index + 1);
             }
         }
 
         /// <summary>
-        /// The manga page that precedes this one.
+        /// The Manga page that precedes this one.
         /// </summary>
         public MangaPage Previous {
             get {
@@ -211,7 +226,7 @@ namespace MangaReader
 
                 if (!previous.TryGetTarget(out page))
                 {
-                    page = manga.GetPage(index - 1);
+                    page = Manga.GetPage(Index - 1);
                     previous.SetTarget(page);
                     page.linkUpNext(this);
                 }
@@ -221,20 +236,20 @@ namespace MangaReader
         }
 
         /// <summary>
-        /// Whether a manga page precedes this one.
+        /// Whether a Manga page precedes this one.
         /// </summary>
         public bool HasPrevious
         {
             get
             {
-                return index > 0;
+                return Index > 0;
             }
         }
 
         /// <summary>
-        /// Parse the manga page, if the reading has not been computed before.
+        /// Parse the Manga page, if the reading has not been computed before.
         /// After calling this method, the reading field is filled with the
-        /// reading of the manga page.
+        /// reading of the Manga page.
         /// </summary>
         private void ensuresReading()
         {
