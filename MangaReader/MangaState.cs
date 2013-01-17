@@ -29,6 +29,21 @@ namespace MangaReader
 
         public DirectoryInfo MangaPath { get { return new DirectoryInfo(Path.GetDirectoryName(CurrentPage)); } }
 
+        private string _coverPage = null;
+
+        public String CoverPage
+        {
+            get
+            {
+                if (_coverPage == null)
+                {
+                    MangaDirectoryManager dir = new MangaDirectoryManager(_currentPage);
+                    _coverPage = dir.GetPagePath(0);
+                }
+                return _coverPage;
+            }
+        }
+
         private string _currentPage;
 
         public string CurrentPage

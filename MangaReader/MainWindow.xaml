@@ -261,14 +261,17 @@
                         <DataTemplate>
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="16" />
                                 </Grid.ColumnDefinitions>
                                 
-                                <StackPanel Grid.Column="0">
+                                <Image Source="{Binding CoverPage}" Width="128" Height="128" Grid.Column="0" RenderOptions.BitmapScalingMode="HighQuality" />
+                                
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock HorizontalAlignment="Stretch" Text="{Binding CurrentPageFilename}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
-                                <Button Grid.Column="1" Style="{StaticResource ResourceKey=OverlayButton}" Click="OpenRecent_Click">
+                                <Button Grid.Column="2" Style="{StaticResource ResourceKey=OverlayButton}" Click="OpenRecent_Click" VerticalAlignment="Stretch">
                                     <Viewbox Child="{StaticResource ResourceKey=RightArrow}" />
                                 </Button>
                             </Grid>
