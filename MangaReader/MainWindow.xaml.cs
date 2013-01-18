@@ -573,5 +573,15 @@ namespace MangaReader
             updateView();
             showView(ViewKind.MangaView);
         }
+
+        private void btnDisplayNext_Click(object sender, RoutedEventArgs e)
+        {
+            viewHandler.Next();
+        }
+
+        private void btnDisplayPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            viewHandler.Previous();
+        }
     }
 }
